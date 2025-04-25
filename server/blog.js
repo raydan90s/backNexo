@@ -1,27 +1,26 @@
-// blog.js
 const connection = require('./db.js'); // Importa la conexión desde db.js
 
-const obtenerTodosLosBlogs = (req, res) => {
+// Obtener todos los blogs
+const obtenerTodosLosBlogs = async (req, res) => {
     try {
-        connection.query('SELECT id, titulo, resumen, urlImagen, orden FROM blog ORDER BY orden ASC', (err, results) => {
-            if (err) {
-                console.error("Error en la consulta SQL para obtener blogs:", err);
-                return res.status(500).json({ error: err.message });
-            }
-            console.log("Consulta SQL exitosa para obtener blogs, resultados:", results);
-            res.json(results);
-            console.log("Respuesta de blogs enviada al cliente");
-        });
-    } catch (error) {
-        console.error("Error en la ruta /api/blogs (obtenerTodosLosBlogs):", error);
-        res.status(500).json({ error: "Error interno del servidor al obtener blogs" });
+        const [results] = await connection.promise().query(
+            'SELECT id, titulo, resumen, urlImagen, orden FROM blog ORDER BY orden ASC'
+        );
+        console.log("Consulta SQL exitosa para obtener blogs, resultados:", results);
+        res.json(results);
+    } catch (err) {
+        console.error("Error en la consulta SQL para obtener blogs:", err);
+        res.status(500).json({ error: err.message });
     }
 };
 
+// Obtener un blog por ID
 const obtenerBlogPorId = async (req, res) => {
     const { id } = req.params;
     try {
-        const [rows] = await connection.promise().query('SELECT * FROM blog WHERE id = ?', [id]);
+        const [rows] = await connection.promise().query(
+            'SELECT * FROM blog WHERE id = ?', [id]
+        );
         const blog = rows[0];
         if (blog) {
             res.json(blog);
@@ -34,13 +33,14 @@ const obtenerBlogPorId = async (req, res) => {
     }
 };
 
+// Actualizar un blog
 const actualizarBlog = async (req, res) => {
     const { id } = req.params;
     const { titulo, resumen, contenido, urlImagen } = req.body; // Excluye el 'orden' de la actualización
     try {
         const [result] = await connection.promise().query(
             'UPDATE blog SET titulo = ?, resumen = ?, contenido = ?, urlImagen = ?, fechaModificacion = CURRENT_TIMESTAMP WHERE id = ?',
-            [titulo, resumen, contenido, urlImagen, id] // No incluye 'orden' aquí
+            [titulo, resumen, contenido, urlImagen, id]
         );
         if (result.affectedRows > 0) {
             res.json({ message: 'Blog actualizado exitosamente' });
@@ -53,11 +53,13 @@ const actualizarBlog = async (req, res) => {
     }
 };
 
-
+// Eliminar un blog
 const eliminarBlog = async (req, res) => {
     const { id } = req.params;
     try {
-        const [result] = await connection.promise().query('DELETE FROM blog WHERE id = ?', [id]);
+        const [result] = await connection.promise().query(
+            'DELETE FROM blog WHERE id = ?', [id]
+        );
         if (result.affectedRows > 0) {
             res.json({ message: 'Blog eliminado exitosamente' });
         } else {
@@ -69,6 +71,7 @@ const eliminarBlog = async (req, res) => {
     }
 };
 
+// Agregar un nuevo blog
 const agregarBlog = async (req, res) => {
     const { titulo, resumen, contenido, urlImagen } = req.body;
     try {
@@ -83,6 +86,7 @@ const agregarBlog = async (req, res) => {
     }
 };
 
+// Actualizar el orden de los blogs
 const actualizarOrdenBlogs = async (req, res) => {
     console.log("Cuerpo recibido:", req.body);
 

@@ -1,17 +1,21 @@
-// usuario.js
 const connection = require('./db'); // Importa la conexión a la base de datos
 const bcrypt = require('bcryptjs');
 
+// Obtener usuario por correo electrónico
 const obtenerUsuarioPorEmail = async (email) => {
     try {
-        const [rows] = await connection.promise().query('SELECT * FROM usuario WHERE correo = ? AND estado = TRUE', [email]);
+        const [rows] = await connection.promise().query(
+            'SELECT * FROM usuario WHERE correo = ? AND estado = TRUE',
+            [email]
+        );
         return rows[0]; // Devuelve el primer usuario activo encontrado con ese email
     } catch (error) {
         console.error('Error al obtener usuario por email:', error);
-        throw error; // Re-lanza el error para que lo maneje el controlador
+        throw new Error('Error al obtener el usuario por email');
     }
 };
 
+// Verificar las credenciales de usuario (correo y contraseña)
 const verificarCredenciales = async (email, password) => {
     try {
         const usuario = await obtenerUsuarioPorEmail(email);
@@ -33,10 +37,11 @@ const verificarCredenciales = async (email, password) => {
         }
     } catch (error) {
         console.error('Error al verificar credenciales:', error);
-        throw error; // Re-lanza el error para que lo maneje el controlador
+        throw new Error('Error al verificar credenciales');
     }
 };
 
+// Crear un nuevo usuario con correo y contraseña
 const crearNuevoUsuario = async (correo, password) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -47,7 +52,7 @@ const crearNuevoUsuario = async (correo, password) => {
         return result.insertId; // Devuelve el ID del nuevo usuario insertado
     } catch (error) {
         console.error('Error al crear nuevo usuario:', error);
-        throw error; // Re-lanza el error para que lo maneje el controlador
+        throw new Error('Error al crear el nuevo usuario');
     }
 };
 
