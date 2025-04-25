@@ -2,11 +2,3 @@ env
 .env
 
 node_modules
-dist
-coverage
-lib
-*.log
-*.tsbuildinfo
-*.tgz
-*.zip
-*.tar.gz
