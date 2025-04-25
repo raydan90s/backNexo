@@ -1,5 +1,5 @@
 require('dotenv').config();
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise'); // Asegúrate de importar la versión con promesas
 
 // Crear el pool de conexiones
 const pool = mysql.createPool({
@@ -16,19 +16,5 @@ const pool = mysql.createPool({
   keepAliveInitialDelay: 0 // Retraso antes de enviar paquetes keep-alive
 });
 
-// Usar el pool para hacer consultas de manera asincrónica
-const promisePool = pool.promise();
-
-// Función para obtener todos los blogs
-async function obtenerBlogs() {
-  try {
-    const [rows] = await promisePool.query('SELECT * FROM blogs');
-    return rows;
-  } catch (error) {
-    console.error('Error al obtener blogs:', error);
-    throw error; // Lanza el error para que lo maneje el controlador
-  }
-}
-
-// Exportar el pool y la función para obtener blogs
-module.exports = { promisePool, obtenerBlogs };
+// Exportar el pool para su uso en otras partes de la aplicación
+module.exports = pool;

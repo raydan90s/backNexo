@@ -3,7 +3,7 @@ const connection = require('./db.js'); // Importa la conexión desde db.js
 // Obtener todos los blogs
 const obtenerTodosLosBlogs = async (req, res) => {
     try {
-        const [results] = await connection.promise().query(
+        const [results] = await connection.query(
             'SELECT id, titulo, resumen, urlImagen, orden FROM blog ORDER BY orden ASC'
         );
         console.log("Consulta SQL exitosa para obtener blogs, resultados:", results);
@@ -18,7 +18,7 @@ const obtenerTodosLosBlogs = async (req, res) => {
 const obtenerBlogPorId = async (req, res) => {
     const { id } = req.params;
     try {
-        const [rows] = await connection.promise().query(
+        const [rows] = await connection.query(
             'SELECT * FROM blog WHERE id = ?', [id]
         );
         const blog = rows[0];
@@ -38,7 +38,7 @@ const actualizarBlog = async (req, res) => {
     const { id } = req.params;
     const { titulo, resumen, contenido, urlImagen } = req.body; // Excluye el 'orden' de la actualización
     try {
-        const [result] = await connection.promise().query(
+        const [result] = await connection.query(
             'UPDATE blog SET titulo = ?, resumen = ?, contenido = ?, urlImagen = ?, fechaModificacion = CURRENT_TIMESTAMP WHERE id = ?',
             [titulo, resumen, contenido, urlImagen, id]
         );
@@ -57,7 +57,7 @@ const actualizarBlog = async (req, res) => {
 const eliminarBlog = async (req, res) => {
     const { id } = req.params;
     try {
-        const [result] = await connection.promise().query(
+        const [result] = await connection.query(
             'DELETE FROM blog WHERE id = ?', [id]
         );
         if (result.affectedRows > 0) {
@@ -75,7 +75,7 @@ const eliminarBlog = async (req, res) => {
 const agregarBlog = async (req, res) => {
     const { titulo, resumen, contenido, urlImagen } = req.body;
     try {
-        const [result] = await connection.promise().query(
+        const [result] = await connection.query(
             'INSERT INTO blog (titulo, resumen, contenido, urlImagen) VALUES (?, ?, ?, ?)',
             [titulo, resumen, contenido, urlImagen]
         );
@@ -112,7 +112,7 @@ const actualizarOrdenBlogs = async (req, res) => {
 
             console.log("Ejecutando consulta:", query, "con valores:", values);
 
-            const [result] = await connection.promise().query(query, values);
+            const [result] = await connection.query(query, values);
             console.log("Resultado de la actualización:", result);
 
             if (result.affectedRows === 0) {

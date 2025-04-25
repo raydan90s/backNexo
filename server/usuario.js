@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 // Obtener usuario por correo electrónico
 const obtenerUsuarioPorEmail = async (email) => {
     try {
-        const [rows] = await connection.promise().query(
+        const [rows] = await connection.query(
             'SELECT * FROM usuario WHERE correo = ? AND estado = TRUE',
             [email]
         );
@@ -45,7 +45,7 @@ const verificarCredenciales = async (email, password) => {
 const crearNuevoUsuario = async (correo, password) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const [result] = await connection.promise().query(
+        const [result] = await connection.query(
             'INSERT INTO usuario (correo, password) VALUES (?, ?)',
             [correo, hashedPassword]
         );
