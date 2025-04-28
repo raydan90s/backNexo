@@ -15,11 +15,12 @@ const obtenerTodosLosBlogs = async (req, res) => {
 };
 
 // Obtener un blog por ID
+// Obtener un blog por ID
 const obtenerBlogPorId = async (req, res) => {
     const { id } = req.params;
     try {
         const [rows] = await connection.query(
-            'SELECT * FROM blog WHERE id = ?', [id]
+            'SELECT *, DATE_FORMAT(fechaModificacion, "%d/%m/%Y") AS fechaModificacionFormateada FROM blog WHERE id = ?', [id]
         );
         const blog = rows[0];
         if (blog) {
