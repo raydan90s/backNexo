@@ -36,16 +36,19 @@ const obtenerVideoPorId = async (req, res) => {
 
 // Agregar un nuevo video
 const agregarVideo = async (req, res) => {
-    const { url } = req.body;
+    const { url, titulo } = req.body;
+    console.log("Intento de agregar video con URL:", url, "y Título:", titulo); // Agregamos logging
+
     try {
         const [result] = await connection.query(
             'INSERT INTO video (url, titulo) VALUES (?, ?)',
-            [url]
+            [url, titulo]
         );
+        console.log("Video creado exitosamente con ID:", result.insertId); // Agregamos logging de éxito
         res.status(201).json({ id: result.insertId, message: 'Video creado exitosamente' });
     } catch (error) {
-        console.error('Error al agregar el video:', error);
-        res.status(500).json({ message: 'Error al crear el video' });
+        console.error('Error al agregar el video:', error); // Asegúrate de loguear el error completo
+        res.status(500).json({ message: 'Error al crear el video', error: error.message }); // Incluye el mensaje de error en la respuesta (solo para desarrollo)
     }
 };
 
