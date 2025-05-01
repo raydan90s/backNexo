@@ -4,7 +4,7 @@ const connection = require('./db.js'); // Importa la conexión desde db.js
 const obtenerTodosLosVideos = async (req, res) => {
     try {
         const [results] = await connection.query(
-            'SELECT id, url FROM video'
+            'SELECT id, url, titulo FROM video' 
         );
         console.log("Consulta SQL exitosa para obtener videos, resultados:", results);
         res.json(results);
