@@ -24,11 +24,11 @@ app.post('/api/blogs', blogController.agregarBlog);
 app.put('/api/orden', blogController.actualizarOrdenBlogs);
 
 // Rutas de videos
-app.get('/', videoController.obtenerTodosLosVideos);
-app.get('/:id', videoController.obtenerVideoPorId);
-app.post('/', videoController.agregarVideo);
-app.put('/:id', videoController.actualizarVideo);
-app.delete('/:id', videoController.eliminarVideo);
+app.get('/api/videos', videoController.obtenerTodosLosVideos);
+app.get('/api/videos/:id', videoController.obtenerVideoPorId);  
+app.post('/api/videos', videoController.agregarVideo);         
+app.put('/api/videos/:id', videoController.actualizarVideo);    
+app.delete('/api/videos/:id', videoController.eliminarVideo); 
 
 // RUTA PARA CREAR UN NUEVO USUARIO
 app.post('/api/usuarios', async (req, res) => {
