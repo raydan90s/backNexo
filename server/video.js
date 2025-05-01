@@ -19,7 +19,7 @@ const obtenerVideoPorId = async (req, res) => {
     const { id } = req.params;
     try {
         const [rows] = await connection.query(
-            'SELECT id, url FROM video WHERE id = ?', [id]
+            'SELECT id, url, titulo FROM video WHERE id = ?', [id]
         );
         const video = rows[0];
         console.log("Consulta SQL exitosa para obtener video por ID, resultado:", video);
@@ -39,7 +39,7 @@ const agregarVideo = async (req, res) => {
     const { url } = req.body;
     try {
         const [result] = await connection.query(
-            'INSERT INTO video (url) VALUES (?)',
+            'INSERT INTO video (url, titulo) VALUES (?, ?)',
             [url]
         );
         res.status(201).json({ id: result.insertId, message: 'Video creado exitosamente' });
@@ -55,7 +55,7 @@ const actualizarVideo = async (req, res) => {
     const { url } = req.body;
     try {
         const [result] = await connection.query(
-            'UPDATE video SET url = ? WHERE id = ?',
+            'UPDATE video SET url = ?, titulo = ? WHERE id = ?',
             [url, id]
         );
         if (result.affectedRows > 0) {
