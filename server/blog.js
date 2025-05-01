@@ -23,6 +23,7 @@ const obtenerBlogPorId = async (req, res) => {
             'SELECT *, DATE_FORMAT(fechaModificacion, "%d/%m/%Y") AS fechaModificacionFormateada FROM blog WHERE id = ?', [id]
         );
         const blog = rows[0];
+        console.log("Consulta SQL exitosa para obtener blogs, resultados:", blog);
         if (blog) {
             res.json(blog);
         } else {

@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const blogController = require('./server/blog');
 const usuarioController = require('./server/usuario'); // Importa el controlador de usuario
+const videoController = require('../server/video'); // Asegúrate de que la ruta al controlador sea correcta
 const jwt = require('jsonwebtoken'); // Asegúrate de importar jsonwebtoken
 
 const app = express();
@@ -21,6 +22,13 @@ app.put('/api/blogs/:id', blogController.actualizarBlog);
 app.delete('/api/blogs/:id', blogController.eliminarBlog);
 app.post('/api/blogs', blogController.agregarBlog);
 app.put('/api/orden', blogController.actualizarOrdenBlogs);
+
+// Rutas de videos
+router.get('/', videoController.obtenerTodosLosVideos);
+router.get('/:id', videoController.obtenerVideoPorId);
+router.post('/', videoController.agregarVideo);
+router.put('/:id', videoController.actualizarVideo);
+router.delete('/:id', videoController.eliminarVideo);
 
 // RUTA PARA CREAR UN NUEVO USUARIO
 app.post('/api/usuarios', async (req, res) => {
