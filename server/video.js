@@ -55,11 +55,11 @@ const agregarVideo = async (req, res) => {
 // Actualizar un video
 const actualizarVideo = async (req, res) => {
     const { id } = req.params;
-    const { url } = req.body;
+    const { url, titulo } = req.body; // Asegúrate de recibir 'titulo' también
     try {
         const [result] = await connection.query(
             'UPDATE video SET url = ?, titulo = ? WHERE id = ?',
-            [url, id]
+            [url, titulo, id] // Proporciona los tres valores: url, titulo, id
         );
         if (result.affectedRows > 0) {
             res.json({ message: 'Video actualizado exitosamente' });
