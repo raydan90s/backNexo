@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const router = require('./routes');  // Importamos el router con las rutas definidas
+const router = require('./routes');  // Importamos el router con las rutas definidas en routes.js
 
 const app = express();
 
@@ -14,11 +14,8 @@ app.use((req, res, next) => {
     next(); // Llama al siguiente middleware o ruta
 });
 
-app.use('/api', router);  
-
-router.get('/', (req, res) => {
-    res.send('¡La API está funcionando!');
-});
+// Usamos el router importado desde routes.js
+app.use('/api', router);  // Esto agrega el prefijo /api a todas las rutas definidas en routes.js
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 6000;
