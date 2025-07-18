@@ -14,8 +14,11 @@ app.use((req, res, next) => {
     next(); // Llama al siguiente middleware o ruta
 });
 
-// Usamos el router importado desde routes.js
-app.use('/api', router);  // Aquí estamos diciendo que todas las rutas definidas en 'router' estarán bajo el prefijo '/api'
+app.use('/api', router);  
+
+router.get('/', (req, res) => {
+    res.send('¡La API está funcionando!');
+});
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 6000;
